@@ -1,26 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package lab4p2_pamelaramirez_12141141;
 
-/**
- *
- * @author pame
- */
-public class Aldeano {
+
+public abstract class Aldeano {
     String nombre;
     String apellido;
+    int vida;
+    int ataque;
 
-    public Aldeano() {
-    }
-
-    public Aldeano(String nombre, String apellido) {
+    public Aldeano(String nombre, String apellido, int vida) {
         this.nombre = nombre;
         this.apellido = apellido;
+        this.vida = vida;
     }
-
+    
     public String getNombre() {
         return nombre;
     }
@@ -36,10 +29,15 @@ public class Aldeano {
     public void setApellido(String apellido) {
         this.apellido = apellido;
     }
+    
+    public abstract double atacar();
 
-    @Override
+    //@Override
     public String toString() {
-        return "Aldeano{" + "nombre=" + nombre + ", apellido=" + apellido + '}';
+        return "\n \t Nombre: " + nombre
+                + "\n \t Apellido " + apellido
+                + "\n \t Vida: " + vida
+                + "\n \t Ataque: " + ataque + "\n";
     }
     
     

@@ -9,13 +9,6 @@ package lab4p2_pamelaramirez_12141141;
  *
  * @author pame
  */
-public class Lab4P2_PamelaRamirez_12141141 {
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
-    }
+public class Explosivo {
     
 }

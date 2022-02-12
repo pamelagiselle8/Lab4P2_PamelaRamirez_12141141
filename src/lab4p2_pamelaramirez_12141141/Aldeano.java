@@ -29,8 +29,16 @@ public abstract class Aldeano {
     public void setApellido(String apellido) {
         this.apellido = apellido;
     }
+
+    public int getVida() {
+        return vida;
+    }
+
+    public void setVida(int vida) {
+        this.vida = vida;
+    }
     
-    public abstract double atacar();
+    public abstract int atacar(Aldeano a);
 
     //@Override
     public String toString() {

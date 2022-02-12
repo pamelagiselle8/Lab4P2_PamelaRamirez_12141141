@@ -9,21 +9,24 @@ import java.util.Scanner;
 public class Main {
     static Scanner lea = new Scanner(System.in);
     static ArrayList <Familia> familias = new ArrayList();
+    static Familia capuleto = new Familia("Capuleto");
+    static Aldeano julieta = new Normal("Julieta", "Capuleto", 100);
+    static Familia montesco = new Familia("Montesco");
     
     public static void main(String[] args) {
-        familias.add(new Familia("Montesco"));
-        familias.get(0).getAldeano().add(new SuperGranjero("Romeo", "Montesco", 1000));
-        familias.get(0).getAldeano().add(new Herrero("Pedro", "Montesco", 1000));
-        familias.get(0).getAldeano().add(new Agronomo("Juan", "Montesco", 1000));
-        familias.add(new Familia("Capuleto"));
-        familias.get(1).getAldeano().add(new Normal("Julieta", "Capuleto", 100));
-        familias.get(1).getAldeano().add(new Herrero("Fulanito", "Capuleto", 100));
-        familias.get(1).getAldeano().add(new Normal("Mengana", "Capuleto", 100));
+        //capuleto.getAldeano().add(new Normal("Julieta", "Capuleto", 100));
+        capuleto.getAldeano().add(new Normal("Fulanito", "Capuleto", 100));
+        capuleto.getAldeano().add(new Normal("Mengana", "Capuleto", 100));
+        
+        montesco.getAldeano().add(new SuperGranjero("Romeo", "Montesco", 1000));
+        montesco.getAldeano().add(new Herrero("Pedro", "Montesco", 100));
+        montesco.getAldeano().add(new Agronomo("Juan", "Montesco", 100));
+        
         familias.add(new Familia("Molina"));
-        familias.get(2).getAldeano().add(new Pacifista("James", "Molina", 100, "No pelien"));
-        familias.get(2).getAldeano().add(new Normal("Papá de James", "Molina", 100));
-        familias.get(2).getAldeano().add(new Normal("Mamá de James", "Molina", 100));
-        Collections.shuffle(familias);
+        familias.get(0).getAldeano().add(new Pacifista("James", "Molina", 100, "No pelien"));
+        familias.get(0).getAldeano().add(new Normal("Papá de James", "Molina", 100));
+        familias.get(0).getAldeano().add(new Herrero("Mamá de James", "Molina", 100));
+        
         ejecutar();
     }
     
@@ -53,6 +56,9 @@ public class Main {
                 break;
             }
             case 3: {
+                System.out.print(capuleto);
+                System.out.println(julieta);
+                System.out.println(montesco);
                 for (Familia f : familias) {
                     System.out.println(f);
                 }
@@ -60,9 +66,7 @@ public class Main {
                 break;
             }
             case 4: {
-                for (Familia f : familias) {
-                    Collections.shuffle(f.getAldeano());
-                }
+                comenzar();
                 ejecutar();
                 break;
             }
@@ -78,10 +82,12 @@ public class Main {
         }
     }
     
-    static boolean validarFamilia(String apellido){
+    static boolean validarApellido(String apellido){
         boolean existe = false;
         for (Familia f : familias) {
-            if (f.apellido.equalsIgnoreCase(apellido)) {
+            if (f.apellido.equalsIgnoreCase(apellido)
+                    || apellido.equalsIgnoreCase("Capuleto")
+                    ||  apellido.equalsIgnoreCase("Montesco")) {
                 existe = true;
             }
         }
@@ -91,18 +97,19 @@ public class Main {
     static void agregarFamilia(){
         System.out.print("\n Ingrese el apellido de la familia: ");
         String apellido = lea.next();
-        if (validarFamilia(apellido) == false) {
-            familias.add(new Familia(apellido));
+        if (validarApellido(apellido)) {
+            System.out.println("\n No pueden haber dos familias con el mismo apellido. \n");
         }
         else{
-            System.out.println("\n No pueden haber dos familias con el mismo apellido. \n");
+            familias.add(new Familia(apellido));
+            System.out.println("\n Familia agregada. \n");
         }
     }
     
     static void agregarAldeano(){
         System.out.print("\n Ingrese el apellido de la familia: ");
         String apellido = lea.next();
-        if (validarFamilia(apellido)) {
+        if (validarApellido(apellido)) {
             int pos = buscarFamilia(apellido);
             System.out.print("Ingrese el nombre del aldeano: ");
             String nombre = lea.next();
@@ -122,7 +129,9 @@ public class Main {
     static int buscarFamilia(String apellido){
         int pos = 0;
         for (Familia f : familias) {
-            pos = familias.indexOf(f);
+            if (f.apellido.equalsIgnoreCase(apellido)) {
+                pos = familias.indexOf(f);
+            }
         }
         return pos;
     }
@@ -167,9 +176,164 @@ public class Main {
             }
         }
     }
-    
+   
     static void comenzar(){
-        
+        System.out.print("\n Ingrese el apellido de la familia que peleará primero: ");
+        String apellido = lea.next();
+        System.out.println();
+        if (validarApellido(apellido)) {
+            if (apellido.equalsIgnoreCase("Montesco") || apellido.equalsIgnoreCase("Capuleto")) {
+                System.out.println(" Debe ingresar una familia que no sea Montesco o Capuleto. \n");
+                comenzar();
+            }
+            else{
+
+                    pelea(familias.get(buscarFamilia(apellido)));
+
+                while (familias.isEmpty() == false) {
+                    System.out.println("\n" + montesco.apellido + " vs. " + familias.get(0).apellido + "\n");
+                    Collections.shuffle(familias);
+                    pelea(familias.get(0));
+                    if (validarFamiliares(familias.get(0)) == false) {
+                        familias.remove(0);
+                    }
+                    else{
+                        break;
+                    }
+                }
+                if (montesco.aldeano.isEmpty()) {
+                    System.out.println("\n ¡aGana la familia Capuleto! \n");
+                }
+                else{
+                    pelea(capuleto);
+                    if (montesco.aldeano.isEmpty()) {
+                        System.out.println("\n ¡Gana la familia Capuleto! \n");
+                    }
+                    else{
+                        System.out.println("\n ¡Gana la familia Montesco! \n");
+                    }
+                }
+            }
+        }
+        else{
+            System.out.println("\n No hay ninguna familia registrada con el apellido ingresado. \n");
+            comenzar();
+        }
     }
     
+    static void pelea(Familia fam){
+        while (validarFamiliares(fam) && validarFamiliares(montesco)){
+            if (fam.aldeano.get(0).nombre != "Julieta") {
+                Collections.shuffle(montesco.aldeano);
+                Collections.shuffle(fam.aldeano);
+                Aldeano b = montesco.getAldeano().get(0);
+                Aldeano a = fam.getAldeano().get(0);
+                Aldeano c;
+                int vida1 = b.vida;
+                int vida2 = a.vida;
+                while (montesco.aldeano.get(0).vida > 0 && fam.aldeano.get(0).vida > 0){
+                    c = a;
+                    a = b;
+                    b = c;
+                    pvp(a, b);
+                }
+                if (montesco.aldeano.get(0).vida < 0) {
+                    System.out.println("\n" + "\t + " + fam.aldeano.get(0).nombre
+                            + " ha derrotado a " + montesco.aldeano.get(0).nombre + "\n");
+                    montesco.aldeano.remove(0);
+                    fam.aldeano.get(0).setVida(vida2);
+                }
+                else{
+                    System.out.println("\n" + "\t + " + montesco.aldeano.get(0).nombre
+                            + " ha derrotado a " + fam.aldeano.get(0).nombre + "\n");
+                    fam.aldeano.remove(0);
+                    montesco.aldeano.get(0).setVida(vida1);
+                }
+            }
+        }
+    }
+    
+    static void pvp(Aldeano a, Aldeano b){
+        int dano = a.atacar(b);
+        if (dano > 0) {
+            if (a instanceof Explosivo) {
+                for (Aldeano x : montesco.aldeano) {
+                    x.setVida(x.vida - dano);
+                }
+                int x = buscarFamilia(b.apellido);
+                for (Aldeano y : familias.get(x).aldeano) {
+                    y.setVida(y.vida - dano);
+                }
+                System.out.println("¡" + a.nombre + " ataca a " + b.nombre + ", la familia de él y la propia haciéndoles a todos "
+                    + dano + " de daño! Dejándolo(a) " + b.nombre + " con " + b.vida + " de vida.");
+            }
+            else{
+                b.setVida(b.vida - dano);
+                System.out.println("¡" + a.nombre + " ataca a " + b.nombre + " haciéndole "
+                                    + dano + " de daño! Dejándolo(a) con " + b.vida + " de vida.");
+            }
+        }
+        else{
+            System.out.println("\n \t - ¡" + a.nombre + " falla el ataque! \n");
+        }
+    }
+    
+    static boolean validarFamiliares(Familia f){
+        boolean sepuede = true;
+        if (f.aldeano.isEmpty()) {
+            sepuede = false;
+        }
+        return sepuede;
+    }
+    
+    /*
+    
+    static void pelea(Familia fam){
+        while (validarFamiliares(fam) && validarFamiliares(montesco)){
+            Collections.shuffle(montesco.aldeano);
+            Collections.shuffle(fam.aldeano);
+            System.out.println(montesco.getAldeano().get(0).nombre + " vs. " + fam.getAldeano().get(0).nombre + "\n");
+            Aldeano a = montesco.getAldeano().get(0);
+            Aldeano b = fam.getAldeano().get(0);
+            Aldeano c;
+            while (montesco.aldeano.get(0).vida > 0 && fam.aldeano.get(0).vida > 0){
+                pvp(a, b);
+                c = a;
+                a = b;
+                b = c;
+            }
+            if (montesco.aldeano.get(0).vida < 0) {
+                System.out.println("\n" + fam.aldeano.get(0).nombre
+                        + " ha derrotado a " + montesco.aldeano.get(0).nombre + "\n");
+                montesco.aldeano.remove(0);
+            }
+            else{
+                System.out.println("\n" + montesco.aldeano.get(0).nombre
+                        + " ha derrotado a " + fam.aldeano.get(0).nombre + "\n");
+                fam.aldeano.remove(0);
+            }
+        }
+        if (validarFamiliares(montesco)) {
+        }
+    }
+    
+    
+    static void comenzar(){
+        System.out.print("\n Ingrese el apellido de la familia: ");
+        String apellido = lea.next();
+        if (validarFamilia(apellido)) {
+            buscarFamilia(apellido);
+        }
+        for (Familia f : familias) {
+            if (validarFamiliares(montesco)) {
+                if (validarFamiliares(f)) {
+                    
+                }
+            }
+        }
+        
+        
+    }
+
+    */
 }

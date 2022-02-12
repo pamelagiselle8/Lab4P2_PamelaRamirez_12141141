@@ -8,8 +8,12 @@ public class Normal extends Aldeano {
         super(nombre, apellido, vida);
         super.ataque = 50;
     }
-    
-    public double atacar() {
-        return 0.0;
+
+    @Override
+    public int atacar(Aldeano a) {
+        if (a instanceof Pacifista) {
+            super.ataque += (int) (super.ataque * 0.05);
+        }
+        return super.ataque;
     }
 }

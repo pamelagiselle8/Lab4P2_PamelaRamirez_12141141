@@ -11,15 +11,9 @@ public class Pacifista extends Aldeano {
         this.discurso = discurso;
     }
 
-    public String getDiscurso() {
-        return discurso;
-    }
-
-    public void setDiscurso(String discurso) {
-        this.discurso = discurso;
-    }
-    
-    public double atacar() {
-        return 0.0;
+    @Override
+    public int atacar(Aldeano a) {
+        System.out.println("\t Discurso del pacifista: " + discurso);
+        return 0;
     }
 }

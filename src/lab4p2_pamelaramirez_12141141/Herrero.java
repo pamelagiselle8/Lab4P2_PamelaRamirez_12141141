@@ -9,11 +9,22 @@ public class Herrero extends Aldeano {
 
     public Herrero(String nombre, String apellido, int vida) {
         super(nombre, apellido, vida);
-        super.ataque = 200 + r.nextInt(500);
+        super.ataque = 200 + r.nextInt(300);
         super.vida = vida + (vida/2);
     }
 
-    public double atacar() {
-        return 0.0;
+    @Override
+    public int atacar(Aldeano a) {
+        if (a instanceof Pacifista) {
+            super.ataque += (int) (super.ataque * 0.05);
+        }
+        else if (a instanceof Agronomo) {
+            super.ataque += (int) (super.ataque * 0.10);
+        }
+        int pos = 1 + r.nextInt(99);
+        if (pos < 10) {
+            super.ataque = 0;
+        }
+        return super.ataque;
     }
 }

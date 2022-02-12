@@ -187,9 +187,7 @@ public class Main {
                 comenzar();
             }
             else{
-
-                    pelea(familias.get(buscarFamilia(apellido)));
-
+                pelea(familias.get(buscarFamilia(apellido)));
                 while (familias.isEmpty() == false) {
                     System.out.println("\n" + montesco.apellido + " vs. " + familias.get(0).apellido + "\n");
                     Collections.shuffle(familias);
@@ -264,7 +262,8 @@ public class Main {
                 for (Aldeano y : familias.get(x).aldeano) {
                     y.setVida(y.vida - dano);
                 }
-                System.out.println("¡" + a.nombre + " ataca a " + b.nombre + ", la familia de él y la propia haciéndoles a todos "
+                System.out.println("¡" + a.nombre + " ataca a " + b.nombre
+                    + ", la familia de él y la propia haciéndoles a todos "
                     + dano + " de daño! Dejándolo(a) " + b.nombre + " con " + b.vida + " de vida.");
             }
             else{
@@ -274,7 +273,13 @@ public class Main {
             }
         }
         else{
-            System.out.println("\n \t - ¡" + a.nombre + " falla el ataque! \n");
+            if (a instanceof Pacifista) {
+                System.out.println("¡" + a.nombre + " no ataca a " + b.nombre
+                        + "! En vez de eso, dice el siguiente discurso: " + ((Pacifista) a).discurso);
+            }
+            else{
+                System.out.println("\n \t - ¡" + a.nombre + " falla el ataque! \n");
+            }
         }
     }
     

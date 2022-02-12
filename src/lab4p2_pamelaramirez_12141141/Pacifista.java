@@ -13,7 +13,7 @@ public class Pacifista extends Aldeano {
 
     @Override
     public int atacar(Aldeano a) {
-        System.out.println("\t Discurso del pacifista: " + discurso);
+        //System.out.println("\t Discurso del pacifista: " + discurso);
         return 0;
     }
 }
